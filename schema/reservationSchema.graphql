@@ -1,0 +1,39 @@
+const { gql } = require('graphql-tag');
+
+const reservationSchema = gql`
+
+type Reservation {
+    id: ID!
+    description: DescriptionReservation! #Description has all information about the reservation
+    location: Location!
+    user: User!
+}
+
+type DescriptionReservation {
+    adults: Int!
+    students: Int!
+    kids: Int!
+    senior: Int!
+    value: Float!
+}
+
+input InputDescriptionReservation {
+    adults: Int!
+    students: Int!
+    kids: Int!
+    senior: Int!
+    value: Float!
+}
+
+type Query {
+    getReservation(reservationID: ID!): Reservation!
+    getReservationsByLocation(locationID: ID!): [Reservation]
+}
+
+type Mutation {
+    registerReservation(reservationID: ID!, description: InputDescriptionReservation!, locationID: ID!): String!
+    deleteReservation(reservationID: ID!): String!
+}
+`;
+
+module.exports = reservationSchema;

@@ -1,0 +1,50 @@
+const { gql } = require('graphql-tag');
+
+const locationSchema = gql`
+type Location {
+    id: ID!
+    address: String!
+    postalCode: Int!
+    zone: String!
+    title: String!
+    category: String!
+    images: [String]!
+    latitude: Float!
+    longitude: Float!
+    reservationIsPossible: Boolean!
+    favorite: Boolean
+    phone: Int!
+    site: String!
+    comments(page: Int!, pageSize: Int!): [Comment]
+}
+
+type Query {
+    getLocationById(locationID: ID!): Location
+    getLocationByCoords(latitude: Float!, longitude: Float!): Location
+    getLocationsByTitle(title: String!, page: Int!, pageSize: Int!): [Location]
+    getLocationsByCategory(tag: String!, page: Int!, pageSize: Int!): [Location]
+    getLocations(page: Int!, pageSize: Int!): [Location] 
+    getFavoriteLocations(page: Int!, pageSize: Int!, locationID: ID!): [Location]
+}
+
+type Mutation {
+    registerLocation(input: LocationInput!): String
+    editLocation(locationID: ID!, input: LocationInput!): String
+    favoriteLocation(locationID: ID!): String
+    deleteLocation(locationID: ID!): String
+}
+
+input LocationInput {
+    address: String
+    postalCode: Int
+    zone: String
+    title: String
+    images: [String]
+    latitude: Float
+    longitude: Float
+    reservationIsPossible: Boolean
+    category: String
+}
+`;
+
+module.exports = locationSchema

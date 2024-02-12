@@ -1,0 +1,53 @@
+const { gql } = require('graphql-tag');
+
+const courseSchema = gql`
+type Course {
+    id: ID!
+    title: String!
+    description: String!
+    pages(page: Int!, pageSize: Int!): [Page]
+}
+
+type Page {
+    id: ID!
+    description: String!
+    image: String!
+}
+
+type Progress {
+    id: ID!
+    course: Course!
+    progressValue: Float!
+}
+
+type Query {
+    getCourseByID(courseID: ID!): Course
+    getCoursesByTitle(title: String!, page: Int!, pageSize: Int!): [Course]
+    getCourses(page: Int!, pageSize: Int!): [Course]
+    getProgressByID(progressID: ID!): Progress
+    getProgressByCourseID(courseID: ID!): Progress
+}
+
+type Mutation {
+  createCourse(input: CourseInput): String
+  editCourse(courseID: ID! title: String, description: String): String
+  editPage(pageID: ID!, description: String, image: String): String
+  editProgressByID(progressID: ID!, progressValue: Float!): String
+  editProgressByCourseID(courseID: ID!, progressValue: Float!): String
+  deleteCourse(courseID: ID!): String
+}
+
+input CourseInput {
+  title: String!
+  description: String!
+  image: String!
+  pages: [PageInput!]
+}
+
+input PageInput {
+  description: String!
+  image: String!
+}
+`;
+
+module.exports = courseSchema;

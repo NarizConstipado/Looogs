@@ -1,0 +1,26 @@
+const { gql } = require('graphql-tag');
+
+const toolSchema = gql`
+type Tool {
+    id: ID!
+    name: String!
+}
+
+input ToolInput {
+    name: String!,
+    image: String!
+}
+
+type Query {
+    getTool(id: ID!): Tool
+    getTools: [Tool]
+    getToolsOrder(userID: ID!): [Tool]
+}
+
+type Mutation {
+    createTool(input: ToolInput!): String
+    deleteTool(toolID: ID, name: String): String
+}
+`;
+
+module.exports = toolSchema

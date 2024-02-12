@@ -1,0 +1,99 @@
+const { gql } = require('graphql-tag');
+
+const noteSchema = gql`
+type Note {
+    id: ID!
+    icon: String!
+    title: String!
+    trash: Boolean!
+    createdAt: String!
+    updatedAt: String!
+    creator: User
+    chapter: Chapter
+    shareWith: [User!]
+    components: [Component!]
+    tags: [Tag!]
+}
+type Tag {
+    id: ID!
+    text: String!
+    color: String!
+}
+type Chapter {
+    id: ID!
+    color: String!
+    title: String!
+}
+type Component {
+    id: ID!
+    description: String!
+    type: String!
+    value: Int
+    noteId: String
+}
+input ComponentInput {
+    description: String!
+    type: String!
+    value: Int
+}
+input EditComponentInput {
+    description: String
+    type: String
+    value: Int
+}
+input ChapterInput {
+    color: String!
+    title: String!
+}
+input EditChapterInput {
+    color: String
+    title: String
+}
+input NoteInput {
+    title: String
+    icon: String
+}
+input TagInput {
+    text: String
+    color: String
+}
+type Query {
+    getNoteById(noteID: ID!): Note
+    getNotes(page: Int!, pageSize: Int!): [Note]
+    getNotesByTitle(title: String!, page: Int!, pageSize: Int!): [Note]
+    getNotesByChapter(chapterID: String!, page: Int!, pageSize: Int!): [Note]
+    getNotesByTags(tags: [Int]!, page: Int!, pageSize: Int!): [Note]
+    getTrashedNotes(page: Int!, pageSize: Int!): [Note]
+    getFavoriteNotes(page: Int!, pageSize: Int!): [Note]
+    getUserTags: [Tag]
+    getUserChapter(chapterID: ID!): Chapter
+    getUserChapters(page: Int!, pageSize: Int!): [Chapter]
+    getUserChaptersByTitle(title: String! page: Int!, pageSize: Int!): [Chapter]
+    getSharedUsers(noteID: ID!): [User]
+}
+
+type Mutation {
+    createNote: String!
+    editNote(noteID: ID!, input: NoteInput): String!
+    trashNote(noteID: ID!): String!
+    deleteNote(noteID: ID!): String!
+    createChapter(input: ChapterInput): String!
+    editChapter(input: EditChapterInput!, chapterID: ID!): String!
+    deleteChapter(chapterID: ID!): String!
+    addChapter(noteID: ID!, chapterID: ID!): String!
+    removeChapter(noteID: ID!, chapterID: ID!): String!
+    favoriteNote(noteID: ID!): String!
+    createComponent(input: ComponentInput!, noteID: ID!): String!
+    editComponent(input: EditComponentInput, componentID: ID!): String!
+    deleteComponent(componentID: ID!): String!
+    createTag(noteID: ID!, input: TagInput!): String!
+    editTag(tagID: ID!, input: TagInput): String!
+    deleteTag(tagID: ID!): String!
+    addTag(tagID: ID!, noteID: ID!): String!
+    removeTag(tagID: ID!, noteID: ID!): String!
+    addSharedUser(noteID: ID!, userID: ID!): String!
+    removeSharedUser(noteID: ID!, userID: ID!): String!
+}
+`;
+
+module.exports = noteSchema

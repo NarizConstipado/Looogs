@@ -1,0 +1,64 @@
+const { gql } = require('graphql-tag');
+
+const userSchema = gql`
+type User {
+    id: ID!
+    email: String!
+    username: String!
+    name: String!
+    address: String!
+    phone: Int!
+    role: String!
+    image: String!
+    notes(page: Int!, pageSize: Int!): [Note]
+    comments(page: Int!, pageSize: Int!): [Comment]
+    badges(page: Int!, pageSize: Int!): [Badge]
+    progresses(page: Int!, pageSize: Int!): [Progress]
+    reservations(page: Int!, pageSize: Int!): [Reservation]
+    favorites: Favorites
+    toolsOrder: [Tool]
+}
+
+type Favorites {
+    notes: [Note]
+    locations: [Location]
+}
+
+input UserInput {
+    email: String
+    name: String
+    username: String
+    password: String
+    address: String
+    phone: Int
+    image: String
+    role: String
+}
+
+type Query {
+    getUser(userID: ID!): User
+    getUsers(page: Int!, pageSize: Int!): [User]
+    getMe: User
+    login(username: String!, password: String!): String
+}
+
+type Mutation {
+    register(input: UserInput!): String
+    editMe(input: UserInput!): String
+    editUser(userID: ID!, input: UserInput): String
+    editUserRole(userID: ID!, role: String!): String
+    deleteMe: String
+    deleteUser(userID: ID!): String
+}
+
+type Badge {
+    id: ID!
+    name: String!
+    image: String!
+    condition: String!
+    descBadge: String!
+    value: Int!
+}
+`;
+
+module.exports = userSchema;

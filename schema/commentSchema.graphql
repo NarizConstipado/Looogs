@@ -1,0 +1,29 @@
+const { gql } = require('graphql-tag');
+
+const commentSchema = gql`
+type Comment {
+    id: ID!
+    description: String!
+    createdAt: String!
+    updatedAt: String!
+    creator: User!
+    locationId: ID!
+    edited: Boolean!
+    likes: [User]!
+}
+
+type Query {
+    getComment(commentID: ID!): Comment
+    getComments(page: Int!, pageSize: Int!): [Comment]
+}
+
+type Mutation {
+    createComment(description: String!, locationID: ID!): String
+    editComment(commentID: ID!, description: String!): String
+    deleteComment(id: ID!): String!
+    addLike(commentID: ID!): String
+    removeLike(commentID: ID!): String
+}
+`;
+
+module.exports = commentSchema;
